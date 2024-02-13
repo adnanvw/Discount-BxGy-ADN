@@ -1,0 +1,119 @@
+/* Add this to your existing stylesheet or create a new one */
+
+#custom-discount-section {
+    margin-top: 20px;
+}
+
+#custom-discount-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.discount-input-container {
+    display: flex;
+    align-items: center;
+}
+
+#discount-code {
+    width: 200px;
+    padding: 5px;
+    margin-right: 10px;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 2px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin: 4px 0;
+    text-indent: 8px;
+    outline: none;
+    transition: .25s;
+
+    &:hover {
+        border-color: rgba(0, 0, 0, 0.3)
+    }
+
+    &:focus,
+    &:active {
+        border-color: #0077C5;
+    }
+}
+
+#checkout {
+    height: 52px;
+    padding: 0 60px;
+    text-transform: uppercase;
+    font-size: 18px;
+    float: right;
+    margin-left: 15px;
+    cursor: pointer;
+
+}
+
+input.btn {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    border: none;
+    margin: 0;
+    padding: 0 15px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: lowercase;
+    background: #50b3da;
+    width: auto;
+}
+
+.custom-discount-section {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    border: none;
+    margin: 0;
+    padding: 0 15px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: lowercase;
+    background: #50b3da;
+    width: auto;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+#apply-discount-btn {
+    padding: 12px 12px;
+    ;
+    background-color: #1F2935;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+#apply-discount-btn:hover {
+    background-color: #2980b9;
+}
+
+#custom-checkout-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #2ecc71;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+#custom-checkout-btn:hover {
+    background-color: #27ae60;
+}

@@ -1,0 +1,29 @@
+<div id="custom-discount-section" style="display: none;">
+  <label for="discount-code">Discount Code:</label>
+  <div class="discount-input-container">
+    <input type="text" id="discount-code" placeholder="Enter discount code">
+    <button id="apply-discount-btn">Apply Discount</button>
+  </div>
+</div>
+
+<!-- Replica of Checkout Button -->
+{% comment %} <a id="custom-checkout-btn" href="{{ routes.cart_url }}" class="btn">Custom Checkout</a> {% endcomment %}
+
+<div class="buttons clearfix" id="checkout-container" style="margin-top:15px; display:none;">
+  <input type="submit" id="checkout" class="btn" name="checkout" value="Checkout" >
+</div>
+
+
+{% schema %}
+  {
+    "name": "BXGY_Discount_BTN",
+    "target": "section",
+    "enabled_on": {
+      "templates": ["cart"]
+    },
+    "javascript": "script.js",
+    "stylesheet": "style.css",
+    "settings": []
+  }
+{% endschema %}
+
