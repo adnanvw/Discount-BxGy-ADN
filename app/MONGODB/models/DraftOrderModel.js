@@ -10,6 +10,6 @@ const draftOrderSchema = new mongoose.Schema({
   },
 });
 
-const DraftOrderModel = mongoose.model("DraftOrder", draftOrderSchema);
+const DraftOrderModel = mongoose.models.DraftOrder || mongoose.model("DraftOrder", draftOrderSchema);
 
 export default DraftOrderModel;

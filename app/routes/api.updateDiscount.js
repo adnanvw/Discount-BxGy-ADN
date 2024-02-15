@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
             try {
                 const { admin, session } = await authenticate.admin(request);
 
-                // console.log('data...............for update.,..............,;........', data);
+                console.log('data...............for update.,..............,;........', data);
                 // console.log('data...............for update.,..............,;........', data._id);
 
 
@@ -25,12 +25,7 @@ export const action = async ({ request }) => {
                         success: "Data Updated Successfully."
                     });
 
-                } else {
-                    return json({
-                        error: "Something went wrong...",
-                        response: response
-                    });
-                }
+                } 
 
             } catch (error) {
                 console.log("error", error)

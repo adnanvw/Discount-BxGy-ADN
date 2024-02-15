@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { shopModel, DraftOrderModel } from "../db.server";
+import { shopModel, DraftOrderModel, discountModel } from "../db.server";
 import { createDraftOrder } from "../graphql/createDraftOrder";
 
 export const action = async ({ request }) => {
@@ -10,6 +10,8 @@ export const action = async ({ request }) => {
 
     const shopData = await shopModel.findOne({ shop });
 
+    const discountData = await discountModel.findOne()
+
     if (!shopData) {
       throw new Error("Invalid shop in session");
     }
@@ -19,8 +21,8 @@ export const action = async ({ request }) => {
       if (i % 2 !== 0) {
         return {
           "appliedDiscount": {
-            "title": "SAVE25",
-            "value": 25,
+            "title": discountData.discountTitle,
+            "value": discountData.discountValue,
             "valueType": "PERCENTAGE"
           },
           "quantity": 1,
@@ -40,6 +42,7 @@ export const action = async ({ request }) => {
       shopData,
       accessToken: shopData.accessToken,
       lineItems,
+      note: data.note
     });
 
     const draftOrder = new DraftOrderModel({ draftOrderID: draftOrderData.draftOrder.id, createdAt: draftOrderData.draftOrder.createdAt })

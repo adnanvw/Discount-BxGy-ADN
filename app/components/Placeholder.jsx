@@ -13,7 +13,8 @@ const Placeholder = ({ component, height = 'auto', width = 'auto', marginTop = '
                     color: 'var(--p-color-text)',
                     marginTop: marginTop,
                     marginBottom: marginBottom,
-                    padding: padding
+                    padding: padding,
+                    display: 'flex', justifyContent: 'center'
                 }}
             >
                 {component}

@@ -3,36 +3,34 @@ import { authenticate } from "../shopify.server";
 import discountModel from "../MONGODB/models/DiscountModel";
 
 export const action = async ({ request }) => {
-
-    const data = JSON.parse(await request.text())
+    const data = JSON.parse(await request.text());
 
     switch (request.method) {
         case "POST": {
             try {
                 const { admin, session } = await authenticate.admin(request);
 
-                console.log('data................,..............,;........', data);
+                console.log('Received data for saving:', data);
 
-                const response = await discountModel.create({
+                const createdDiscount = await discountModel.create({
                     ...data,
                     storeURL: session.shop
-                })
+                });
 
-                if (response) {
+                return json({
+                    success: "Data Saved Successfully.",
+                    createdDiscountId: createdDiscount._id
+                });
+            } catch (error) {
+                console.error("Error while saving data:", error);
+
+                if (error.name === 'ValidationError') {
                     return json({
-                        success: "Data Saved Successfully."
-                    });
-
-                } else {
-                    return json({
-                        error: "Something went wrong...",
-                        response: response
-
+                        error: "Validation Error",
+                        validationErrors: error.errors
                     });
                 }
 
-            } catch (error) {
-                console.log("error", error)
                 return json({
                     error: "Something went wrong..."
                 });
