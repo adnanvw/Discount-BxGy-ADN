@@ -3,7 +3,7 @@
 client_id = "87fbb647d07caa67a27270ab5825d5e2"
 name = "discount-bxgy-adn"
 handle = "discount-bxgy-adn"
-application_url = "https://likely-doubt-cook-mentor.trycloudflare.com"
+application_url = "https://along-latex-graduated-expression.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products,write_draft_orders"
 
 [auth]
 redirect_urls = [
-  "https://likely-doubt-cook-mentor.trycloudflare.com/auth/callback",
-  "https://likely-doubt-cook-mentor.trycloudflare.com/auth/shopify/callback",
-  "https://likely-doubt-cook-mentor.trycloudflare.com/api/auth/callback"
+  "https://along-latex-graduated-expression.trycloudflare.com/auth/callback",
+  "https://along-latex-graduated-expression.trycloudflare.com/auth/shopify/callback",
+  "https://along-latex-graduated-expression.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
