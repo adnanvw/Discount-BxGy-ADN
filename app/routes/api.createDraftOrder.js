@@ -12,6 +12,10 @@ export const action = async ({ request }) => {
 
     const discountData = await discountModel.findOne()
 
+    if (!discountData || !discountData.discountTitle) {
+      throw new Error("Invalid discount data");
+    }
+
     if (!shopData) {
       throw new Error("Invalid shop in session");
     }
@@ -44,6 +48,8 @@ export const action = async ({ request }) => {
       lineItems,
       note: data.note
     });
+
+    console.log('draftOrderData', draftOrderData)
 
     const draftOrder = new DraftOrderModel({ draftOrderID: draftOrderData.draftOrder.id, createdAt: draftOrderData.draftOrder.createdAt })
 

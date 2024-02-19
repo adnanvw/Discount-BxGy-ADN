@@ -246,7 +246,7 @@
   
           {% if ItemsCount > 1 %}
           <!-- custom new checkout button  -->
-          <div class="buttons clearfix" style="margin-top:15px;">
+          <div class="buttons clearfix discount-available-checkout" style="margin-top:15px;">
             <input type="submit" data-sorted-cart-items="{{ sorted_cart_items | json | escape }}" id="checkout"
               class="btn checkout-btn-custom" name="checkout" value="Checkout"
               style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
@@ -263,6 +263,12 @@
               style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
           </div>
           {% endif %}
+  
+          {% comment %}<!-- original old checkout button when no discount is available and items is more then 1 on cart page  -->
+          <div class="buttons clearfix no-discount-available-checkout" style="margin-top:15px;display:none;">
+            <input type="submit" id="checkout" class="btn" name="checkout" value="Checkout"
+              style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
+          </div>{% endcomment %}
   
           {% if ItemsCount > 1 %}
           <!-- Native checkout Hyperlink text  -->
