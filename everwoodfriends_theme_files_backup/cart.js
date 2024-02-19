@@ -122,7 +122,8 @@ function updateQuantity(id, quantity) {
     body: JSON.stringify({ updates }),
   })
     .then((response) => {
-      return response.json();
+      const res = response.json();
+      window.location.reload();
     })
     .catch((error) => {
       console.error("Error:", error);
