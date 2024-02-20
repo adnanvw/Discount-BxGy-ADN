@@ -7,7 +7,7 @@ export const loader = async ({ request }) => {
         // const { session } = await authenticate.admin(request);
 
         const gotDiscount = await discountModel.find();
-        console.log('gotDiscount.............',gotDiscount);
+        // console.log('gotDiscount.............',gotDiscount);
         return json({
             gotDiscount,
         }, { status: 200 });

@@ -31,7 +31,7 @@ export default function DiscountTable({ setSelected }) {
         if (response.ok) {
           const jsonData = await response.json();
           const { gotDiscount } = jsonData;
-          console.log('jsonData from getDiscounts', gotDiscount);
+          // console.log('jsonData from getDiscounts', gotDiscount);
           setDiscountData(gotDiscount);
         } else {
           console.error('Failed to fetch discounts:', response.statusText);

@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
             try {
                 const { admin, session } = await authenticate.admin(request);
 
-                console.log('data...............for update.,..............,;........', data);
+                // console.log('data...............for update.,..............,;........', data);
                 // console.log('data...............for update.,..............,;........', data._id);
 
 

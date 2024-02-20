@@ -3,7 +3,7 @@
 client_id = "87fbb647d07caa67a27270ab5825d5e2"
 name = "discount-bxgy-adn"
 handle = "discount-bxgy-adn"
-application_url = "https://infant-controlling-fastest-magnitude.trycloudflare.com"
+application_url = "https://current-related-commands-palestinian.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products,write_draft_orders"
 
 [auth]
 redirect_urls = [
-  "https://infant-controlling-fastest-magnitude.trycloudflare.com/auth/callback",
-  "https://infant-controlling-fastest-magnitude.trycloudflare.com/auth/shopify/callback",
-  "https://infant-controlling-fastest-magnitude.trycloudflare.com/api/auth/callback"
+  "https://current-related-commands-palestinian.trycloudflare.com/auth/callback",
+  "https://current-related-commands-palestinian.trycloudflare.com/auth/shopify/callback",
+  "https://current-related-commands-palestinian.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

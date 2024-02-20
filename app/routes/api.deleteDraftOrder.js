@@ -6,7 +6,7 @@ export const action = async ({ request }) => {
         case "DELETE": {
             try {
 
-                console.log('data for delete................,..............,;........', );
+                // console.log('data for delete................,..............,;........', );
 
                 // const response = await discountModel.findByIdAndDelete(data._id);
 

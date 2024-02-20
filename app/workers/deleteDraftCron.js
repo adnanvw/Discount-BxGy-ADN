@@ -11,7 +11,7 @@ export async function deleteDraftCron() {
 
     const task = async () => {
         try {
-            console.log('Task executed at:', new Date(), shopData);
+            // console.log('Task executed at:', new Date(), shopData);
 
             const fifteenMinutesAgo = moment().subtract(15, 'minutes').toISOString();
 

@@ -11,7 +11,7 @@ export const action = async ({ request }) => {
             try {
                 const { admin, session } = await authenticate.admin(request);
 
-                console.log('data for delete................,..............,;........', data);
+                // console.log('data for delete................,..............,;........', data);
 
                 const response = await discountModel.findByIdAndDelete(data._id);
 

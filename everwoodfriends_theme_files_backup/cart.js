@@ -190,9 +190,25 @@ async function handleCheckoutClick() {
     customCheckOutButton.getAttribute("data-sorted-cart-items")
   );
 
+  // const itemsForCheckout = sortedCartItemsData.map((item) => ({
+  //   variant_id: item.variant_id,
+  //   properties: item.properties,
+  //   quantity: item.quantity,
+  // }));
+
   const itemsForCheckout = sortedCartItemsData.flatMap((item) =>
     Array.from({ length: item.quantity }, () => ({
       variant_id: item.variant_id,
+      properties: item.properties,
+      // properties: {
+      //   "Baby name": "we",
+      //   "Birth date": "df",
+      //   "Initial": "xv",
+      //   "Weight and Length": "rt",
+      //   "Dedication": "23",
+      //   "Image": "ghj"
+      // },
+      quantity: 1,
     }))
   );
 

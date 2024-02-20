@@ -10,7 +10,7 @@ export const action = async ({ request }) => {
             try {
                 const { admin, session } = await authenticate.admin(request);
 
-                console.log('Received data for saving:', data);
+                // console.log('Received data for saving:', data);
 
                 const createdDiscount = await discountModel.create({
                     ...data,
