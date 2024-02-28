@@ -1,67 +1,68 @@
 {%- unless settings.cart_type == 'drawer' -%}
-  <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
   {%- endunless -%}
   
-  <style>
-    #checkout {
-      height: 52px;
-      padding: 0 60px;
-      text-transform: uppercase;
-      font-size: 18px;
-      position: relative;
-    }
   
-    #loader {
-      position: relative;
-      left: 92rem;
-      width: 12px;
-      height: 12px;
-      top: 16px;
-      display: none;
-      transform: translate(-50%, -50%) translateZ(0);
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-  
-    @media (min-width: 229px) and (max-width: 629px) {
-      #loader {
-        left: 40rem;
+    <style>
+      #checkout {
+        height: 52px;
+        padding: 0 60px;
+        text-transform: uppercase;
+        font-size: 18px;
+        position: relative;
       }
-    }
-  
-    @media (min-width: 629px) and (max-width: 795px) {
+    
       #loader {
-        left: 52rem;
-      }
-    }
-  
-    @media (min-width: 795px) and (max-width: 1023px) {
-      #loader {
-        left: 69rem;
-      }
-    }
-  
-    @media (min-width: 1025px) {
-      #loader {
+        position: relative;
         left: 92rem;
+        width: 12px;
+        height: 12px;
+        top: 16px;
+        display: none;
+        transform: translate(-50%, -50%) translateZ(0);
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
       }
-    }
-  
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
+    
+      @media (min-width: 229px) and (max-width: 629px) {
+        #loader {
+          left: 40rem;
+        }
       }
-  
-      100% {
-        transform: rotate(360deg);
+    
+      @media (min-width: 629px) and (max-width: 795px) {
+        #loader {
+          left: 52rem;
+        }
       }
-    }
-  </style>
-  
+    
+      @media (min-width: 795px) and (max-width: 1023px) {
+        #loader {
+          left: 69rem;
+        }
+      }
+    
+      @media (min-width: 1025px) {
+        #loader {
+          left: 92rem;
+        }
+      }
+    
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+    
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    
   <div id="cart">
-  
+    
     <!-- Begin empty cart -->
     {% if cart.item_count == 0 %}
     <div class="row">
@@ -70,7 +71,7 @@
       </div>
     </div>
     <!-- End empty cart -->
-  
+    
     <!-- Begin cart -->
     {% else %}
     <div class="row">
@@ -88,28 +89,23 @@
               </tr>
             </thead>
             <tbody>
-  
-              {% assign sorted_cart_items = cart.items | sort: 'price' | reverse %}
-              {% assign ItemsTotalPrice = 0 %}
-              {% comment %}{{ cart.items | json }} {% endcomment %}
-  
-              {%- for item in sorted_cart_items -%}
-              {% assign quantity = item.quantity | plus: 0 %}
-  
-              {%- if quantity == 1 -%}
-              {%- assign row_span = 1 -%}
-              {%- else -%}
-              {%- assign row_span = quantity -%}
-              {%- endif -%}
-  
-              {%- for i in (1..row_span) -%}
-              {% assign ItemsCount = ItemsCount | plus: 1 %}
+              {% assign cartItemsSize = cart.items | size %}
+              {% assign is_items_more_than_one = false %}
+              
+              {% if cartItemsSize > 1 %}
+                {% assign is_items_more_than_one = true %}
+              {% endif %}
+              
+              {% for item in cart.items %}
+                
+                {% if item.quantity > 1 %}
+                  {% assign is_items_more_than_one = true %}
+                {% endif %}
               <tr>
                 <td class="image">
                   <div class="product_image">
                     <a href="{{ item.product.url }}">
-                      <img src="{{ item.product.featured_image | product_img_url: 'small' }}"
-                        alt="{{ item.product.title }}" />
+                      <img src="{{ item.product.featured_image | product_img_url: 'small' }}"  alt="{{ item.product.title }}" />
                     </a>
                   </div>
                 </td>
@@ -118,18 +114,18 @@
                     <strong>{{ item.product.title }}</strong>
                     {% assign property_size = item.properties | size %}
                     {% if property_size > 0 %}
-                    {% for p in item.properties %}
-                    {% assign first_character_in_key = p.first | truncate: 1, '' %}
-                    {% unless p.last == blank or first_character_in_key == '_' %}
-                    {{ p.first }}:
-                    {% if p.last contains '/uploads/' %}
-                    <a class="lightbox" href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
-                    {% else %}
-                    {{ p.last }}
-                    {% endif %}
-                    <br>
-                    {% endunless %}
-                    {% endfor %}
+                      {% for p in item.properties %}
+                        {% assign first_character_in_key = p.first | truncate: 1, '' %}
+                        {% unless p.last == blank or first_character_in_key == '_' %}
+                          {{ p.first }}:
+                          {% if p.last contains '/uploads/' %}
+                            <a class="lightbox" href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                          {% else %}
+                            {{ p.last }}
+                          {% endif %}
+                          <br>
+                        {% endunless %}
+                      {% endfor %}
                     {% endif %}
                     {% if item.product.variants.size > 1 %}
                     <span class="variant_title">{{ item.variant.title }}</span>
@@ -137,156 +133,79 @@
                   </a>
                 </td>
                 <td class="qty">
-  
-                  {% comment %}<input type="text" size="1" name="updates[]" id="updates_{{ item.id }}"
-                    value="{{ item.quantity }}" onfocus="this.select();" class="tc item-quantity" />{% endcomment %}
-  
-                  <input type="text" input-quantity-variant-id={{ item.variant_id }} original-quantity-data={{
-                    item.quantity }} size="1" name="updates[]" id="updates_{{ item.id }}" value="{{ 1 }}"
-                    onfocus="this.select();" class="tc item-quantity" />
+                  <input type="text" size="1" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" onfocus="this.select();" class="tc item-quantity" />
                 </td>
-  
-                <td class="price">
-  
-                  {% assign is_even = ItemsCount| modulo: 2 %}
-  
-  
-                  {% if is_even == 1 %}
-                  {% assign ItemsTotalPrice = ItemsTotalPrice | plus: item.original_price %}
-                  {% endif %}
-  
-                  {% if is_even == 0 %}
-                  {% assign discountPrice = item.original_price | times: 0.75 %}
-                  {% assign ItemsTotalPrice = ItemsTotalPrice | plus: discountPrice %}
-                  {% endif %}
-  
-                  <!-- original price element -->
-                  <span data-original-price={{ item.original_price }} check_is_even_row="{{ is_even }}"
-                    class="{% if is_even == 0 %}elements-for-lineThrough{% endif %} percentage-original-price-value">
-                    {{ item.original_price | money }}
-                  </span>
-                  <br />
-  
-                  <!-- discounted price element will show only on even number of items -->
-                  {% if is_even == 0 %}
-                  <!-- previously before dynamic below value I had added innnerText of discount value span -->
-                  {% comment %} {{ item.original_price | times: 0.75 | money }} {% endcomment %}
-                  <span data-original-price-discount={{ item.original_price }}
-                    class="discounted-price percentage-discounted-price-value"></span><br>
-  
-                  <!-- previously before dynamic below value I had added innnerText of discount title span -->
-                  {% comment %} "SAVE25" Applied {% endcomment %}
-                  <span class="discounted-price percentage-discounted-price-title" style="
-                    font-size: 10px;
-                  "></span>
-                  {% endif %}
-                </td>
-                <!-- old remove item button -->
-                {% comment %} <td class="remove"><a href="/cart/change?line={{ forloop.index }}&quantity=0"
-                    class="cart">Remove</a></td> {% endcomment %}
-  
-                <!-- new remove item button -->
-                <td class="remove" style="cursor:pointer;color:#65C1E2"
-                  onclick="handleRemoveClick('{{ item.variant_id }}', '{{ item.quantity }}')" id="remove"
-                  remove-data-id={{ item.variant_id }} remove-data-quantity={{ item.quantity }}>Remove</td>
-  
+                <td class="price">{{ item.line_price | money }}</td>
+                <td class="remove"><a href="/cart/change?line={{ forloop.index }}&quantity=0" class="cart">Remove</a></td>
               </tr>
               {% endfor %}
-              {% endfor %}
-  
               <tr class="summary">
                 <td class="image">&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <!-- old item price code -->
-                {% comment %}<td class="price"><span class="total"><strong>{{ cart.total_price | money }}</strong></span>
-                </td>{% endcomment %}
-  
-                <!-- new item price code -->
-                <td class="price">
-                  <span class="total">
-                    <strong>
-  
-                      <span class="{% if ItemsCount > 1 %}elements-for-lineThrough{% endif %}">{{cart.total_price |
-                        money }}</span>
-  
-                      {% if ItemsCount > 1 %}
-                      <br>
-                      <!-- previously before dynamic below value I had added innnerText of discounted total price span -->
-                      {% comment %} {{ ItemsTotalPrice | money }} {% endcomment %}
-                      <span id="totalPrice-custom"></span>
-                      {% endif %}
-                    </strong>
-                  </span>
-                </td>
-  
-                <td><input type="submit" id="update-cart" class="btn" name="update" value="Update"
-                    style="background:#666666;" /></td>
+                <td class="price"><span class="total"><strong>{{ cart.total_price | money }}</strong></span></td>
+                <td><input type="submit" id="update-cart" class="btn" name="update" value="Update" style="background:#666666;" /></td>
               </tr>
             </tbody>
           </table>
-          <!-- Begin special notes -->
+    <!-- Begin special notes -->
           <div align="right">
             <label for="note">Add gift message or special instructions to your order:</label></br>
             <textarea id="note" name="note" rows="10" cols="40">{{ cart.note }}</textarea>
-            <br><br>
-            <!-- old  -->
-            {% comment %}<a href="/pages/promotion-details" style="color:#555555;">Reminder: Buy 1, Add a 2nd Item 25%
-              Off!</a>
-            <span style="color:#555555;"><br>Enter <strong style="color:#50b3da!important;">discount code
-                "SAVE25"</strong> <br>in the Order Summary during checkout.
-            </span> {% endcomment %}
-  
-            <!-- new -->
-            <span style="color:#555555;">Carts with more than one item automatically <br> receive <strong
-                style="color:#50b3da!important;">25% off</strong> half the items!</span>
+  <br><br>
+          <!-- old  -->
+              {% comment %}<a href="/pages/promotion-details" style="color:#555555;">Reminder: Buy 1, Add a 2nd Item 25%
+                Off!</a>
+              <span style="color:#555555;"><br>Enter <strong style="color:#50b3da!important;">discount code
+                  "SAVE25"</strong> <br>in the Order Summary during checkout.
+              </span> {% endcomment %}
+    
+              <!-- new -->
+              <span style="color:#555555;" class="additional-text"></span>
           </div>
-          <!-- End special notes -->
-  
-          {% if ItemsCount > 1 %}
-          <!-- custom new checkout button  -->
-          <div class="buttons clearfix discount-available-checkout" style="margin-top:15px;">
-            <input type="submit" data-sorted-cart-items="{{ sorted_cart_items | json | escape }}" id="checkout"
-              class="btn checkout-btn-custom" name="checkout" value="Checkout"
-              style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
-            <div id="loader"></div>
-          </div>
-          <div id="error-text" style="display:none;text-align: right; margin-top: 6px;">
-            <p style="color: red;">An error occurred. Please try again, or alternatively, proceed with the checkout using the link below.</p>
-          </div>
-  
-          {% else %}
-          <!-- original old checkout button  -->
-          <div class="buttons clearfix" style="margin-top:15px;">
-            <input type="submit" id="checkout" class="btn" name="checkout" value="Checkout"
-              style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
-          </div>
-          {% endif %}
-  
-          {% comment %}<!-- original old checkout button when no discount is available and items is more then 1 on cart page  -->
-          <div class="buttons clearfix no-discount-available-checkout" style="margin-top:15px;display:none;">
-            <input type="submit" id="checkout" class="btn" name="checkout" value="Checkout"
-              style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
-          </div>{% endcomment %}
-  
-          {% if ItemsCount > 1 %}
-          <!-- Native checkout Hyperlink text  -->
-          <div align="right" style="margin-top:15px;">
-            <label for="custom-checkout" style="cursor:pointer;color:#65C1E2">Click here to Checkout using an <br>
-              alternative Discount Code.</label>
-            <input type="submit" id="custom-checkout" class="btn" style="display:none;" name="checkout"
-              value="Checkout" />
-          </div>
-          {% endif %}
-  
-          <!--
+    <!-- End special notes -->
+          {% if is_items_more_than_one == true %}
+            <!-- custom new checkout button  -->
+            <div class="buttons clearfix discount-available-checkout" style="margin-top:15px;">
+              <input type="submit" cart-items-data="{{ cart.items | json | escape }}" id="checkout"
+                class="btn checkout-btn-custom" name="checkout" value="Checkout"
+                style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
+              <div id="loader"></div>
+            </div>
+            <div id="error-text" style="display:none;text-align: right; margin-top: 6px;">
+              <p style="color: red;">An error occurred. Please try again, or alternatively, proceed with the checkout using the link below.</p>
+            </div>
+            {% else %}
+            <!-- original old checkout button  -->
+            <div class="buttons clearfix" style="margin-top:15px;">
+              <input type="submit" id="checkout" class="btn" name="checkout" value="Checkout"
+                style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
+            </div>
+            {% endif %}
+    
+            {% comment %}
+            <div class="buttons clearfix no-discount-available-checkout" style="margin-top:15px;display:none;">
+              <input type="submit" id="checkout" class="btn" name="checkout" value="Checkout"
+                style="height:52px;padding:0 60px;text-transform:uppercase;font-size:18px;" />
+            </div>{% endcomment %}
+    
+            {% if is_items_more_than_one == true %}
+            <!-- Native checkout Hyperlink text  -->
+            <div align="right" style="margin-top:15px;">
+              <label for="custom-checkout" style="cursor:pointer;color:#65C1E2">Click here to Checkout using an <br>
+                alternative Discount Code.</label>
+              <input type="submit" id="custom-checkout" class="btn" style="display:none;" name="checkout"
+                value="Checkout" />
+            </div>
+            {% endif %}
+  <!--
           <div class="row">
             {% if settings.display_extra_checkout_buttons %}
           <div class="extra-checkout-buttons span6">
               {% if additional_checkout_buttons %}
           <div align="left">
             <a style="color:#555555;">Alternative checkouts:</a>
-          </div>
+            </div>
               {{ content_for_additional_checkout_buttons }}
               {% endif %}
             </div>
@@ -297,14 +216,12 @@
         </form>
       </div>
   
-      {% if cart.item_count == 0 and settings.featured_products and settings.featured_products != '' and
-      collections[settings.featured_products].handle == settings.featured_products and
-      collections[settings.featured_products].products_count > 0 %}
+      {% if cart.item_count == 0 and settings.featured_products and settings.featured_products != '' and collections[settings.featured_products].handle == settings.featured_products and collections[settings.featured_products].products_count > 0 %}
       <div class="cart-featured">
         <h3 class="featured-cart-title">Featured Items</h3>
         {% for product in collections[settings.featured_products].products limit: 4 %}
-        {% include 'product-loop' %}
-        {% endfor %}
+            {% include 'product-loop' %}
+          {% endfor %}
       </div>
       {% endif %}
   
