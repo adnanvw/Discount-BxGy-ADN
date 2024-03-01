@@ -3,7 +3,7 @@
 client_id = "87fbb647d07caa67a27270ab5825d5e2"
 name = "discount-bxgy-adn"
 handle = "discount-bxgy-adn"
-application_url = "https://requires-wearing-neil-larger.trycloudflare.com"
+application_url = "https://yeah-captured-trigger-hottest.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products,write_draft_orders"
 
 [auth]
 redirect_urls = [
-  "https://requires-wearing-neil-larger.trycloudflare.com/auth/callback",
-  "https://requires-wearing-neil-larger.trycloudflare.com/auth/shopify/callback",
-  "https://requires-wearing-neil-larger.trycloudflare.com/api/auth/callback"
+  "https://yeah-captured-trigger-hottest.trycloudflare.com/auth/callback",
+  "https://yeah-captured-trigger-hottest.trycloudflare.com/auth/shopify/callback",
+  "https://yeah-captured-trigger-hottest.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
