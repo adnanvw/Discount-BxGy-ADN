@@ -20,7 +20,7 @@ const shopify = shopifyApp({
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
   sessionStorage: new MongoDBSessionStorage(
-    process.env.MONGODB_URI || 'mongodb://localhost:27017',
+    process.env.MONGODB_URI || 'mongodb://44.218.64.234:27017',
     'discount-bxgy-adn',
   ),  distribution: AppDistribution.AppStore,
   restResources,
