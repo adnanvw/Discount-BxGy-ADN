@@ -1,12 +1,19 @@
 import { json } from "@remix-run/node";
-import { authenticate } from '../../app/shopify.server'
+import { authenticate } from "../shopify.server";
 import { discountModel } from "../db.server";
+import AlternativeDiscountModel from "../MONGODB/models/AlternativeDiscountModel";
 
-export const loader = async ({ request }) => {
+export const loader = async ({ params }) => {
     try {
         // const { session } = await authenticate.admin(request);
+        let gotDiscount
+        if (params.type === 'alternativeDiscount') {
+            gotDiscount = await AlternativeDiscountModel.find();
 
-        const gotDiscount = await discountModel.find();
+        } else {
+            gotDiscount = await discountModel.find();
+
+        }
         // console.log('gotDiscount.............',gotDiscount);
         return json({
             gotDiscount,

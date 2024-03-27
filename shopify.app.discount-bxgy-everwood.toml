@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "b304bdc9247de3a23fd44951e4992232"
+name = "discount-bxgy-adn"
+handle = "discount-bxgy-everwood"
+application_url = "https://morocco-dale-recorded-remix.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "my-store-development-15.myshopify.com"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_draft_orders,write_products"
+
+[auth]
+redirect_urls = [
+  "https://morocco-dale-recorded-remix.trycloudflare.com/auth/callback",
+  "https://morocco-dale-recorded-remix.trycloudflare.com/auth/shopify/callback",
+  "https://morocco-dale-recorded-remix.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[app_proxy]
+url = "https://morocco-dale-recorded-remix.trycloudflare.com"
+subpath = "bxgy"
+prefix = "apps"
+
+[pos]
+embedded = false

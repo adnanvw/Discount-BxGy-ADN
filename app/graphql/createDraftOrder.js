@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const createDraftOrder = async ({ shopData, accessToken, lineItems, note }) => {
+export const createDraftOrder = async ({ shopData, accessToken, lineItems, note, appliedDiscountTotal }) => {
   try {
-    
+
     const draftOrderResponse = await axios({
       url: `https://${shopData.shop}/admin/api/2023-07/graphql.json`,
       method: "post",
@@ -28,6 +28,9 @@ export const createDraftOrder = async ({ shopData, accessToken, lineItems, note 
           input: {
             note: note,
             lineItems,
+            ...(
+              appliedDiscountTotal ? {appliedDiscount:appliedDiscountTotal} : {}
+            )
           },
         },
       },

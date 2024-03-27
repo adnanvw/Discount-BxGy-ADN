@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 import discountModel from "../MONGODB/models/DiscountModel";
+import AlternativeDiscountModel from "../MONGODB/models/AlternativeDiscountModel";
 
 export const action = async ({ request }) => {
 
@@ -15,17 +16,26 @@ export const action = async ({ request }) => {
                 // console.log('data...............for update.,..............,;........', data._id);
 
 
-                const response = await discountModel.findByIdAndUpdate(data._id, {
-                    ...data,
-                    storeURL: session.shop
-                }, { new: true });
+                let response;
+                if (data.type === 'alternativeDiscounts') {
+                    response = await AlternativeDiscountModel.findByIdAndUpdate(data._id, {
+                        ...data,
+                        storeURL: session.shop
+                    }, { new: true });
+                } else {
+                    response = await discountModel.findByIdAndUpdate(data._id, {
+                        ...data,
+                        storeURL: session.shop
+                    }, { new: true });
+                }
+
 
                 if (response) {
                     return json({
                         success: "Data Updated Successfully."
                     });
 
-                } 
+                }
 
             } catch (error) {
                 console.log("error", error)

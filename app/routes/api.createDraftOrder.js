@@ -1,14 +1,77 @@
 import { json } from "@remix-run/node";
-import { shopModel, DraftOrderModel, discountModel } from "../db.server";
+import { shopModel, DraftOrderModel, discountModel, } from "../db.server";
 import { createDraftOrder } from "../graphql/createDraftOrder";
+import AlternativeDiscountModel from "../MONGODB/models/AlternativeDiscountModel";
 
 export const action = async ({ request }) => {
   const data = JSON.parse(await request.text())
-  const { shop, itemsForCheckout } = data
+  const { shop, itemsForCheckout, discountCode } = data
 
   try {
-
     const shopData = await shopModel.findOne({ shop });
+
+    let AlternativeDiscountData
+    if (discountCode) {
+      AlternativeDiscountData = await AlternativeDiscountModel.findOne({ discountTitle: discountCode })
+      // console.log('AlternativeDiscountData.............', AlternativeDiscountData)
+      if (!AlternativeDiscountData) {
+        // console.log('inside.............', AlternativeDiscountData)
+        return json({
+          message: 'Invalid Discount Code.',
+          discountCodeNotValid: true,
+        });
+      }
+      else {
+        // console.log('hit else itemsForCheckout=============.==================.==========', itemsForCheckout)
+        let itemsForDraftOrderTotalDiscount = [];
+        const reduceItems = itemsForCheckout.forEach((data) => {
+          const matchedVariantIDIndex = itemsForDraftOrderTotalDiscount.findIndex(
+            (it) => it.variant_id === data.variant_id
+          );
+
+          if (matchedVariantIDIndex === -1) {
+            itemsForDraftOrderTotalDiscount.push({ ...data });
+          } else {
+            itemsForDraftOrderTotalDiscount[matchedVariantIDIndex].quantity += 1;
+          }
+        });
+        // console.log('hit else itemsForDraftOrderTotalDiscount=============.==================.==========', itemsForDraftOrderTotalDiscount)
+        const lineItems = itemsForDraftOrderTotalDiscount.map((item) => {
+          const customAttributesArray = Object.entries(item.properties).map(([key, value]) => ({
+            key,
+            value
+          }));
+
+          return {
+            customAttributes: customAttributesArray,
+            quantity: item.quantity,
+            variantId: `gid://shopify/ProductVariant/${item.variant_id}`,
+          };
+        });
+
+        const draftOrderData = await createDraftOrder({
+          shopData,
+          accessToken: shopData.accessToken,
+          lineItems,
+          note: data.note,
+          appliedDiscountTotal: {
+            value: AlternativeDiscountData.discountValue,
+            valueType: AlternativeDiscountData.discountValueType,
+            title: AlternativeDiscountData.discountTitle
+          },
+        });
+        // console.log('draftOrderData', draftOrderData)
+
+        const draftOrder = new DraftOrderModel({ draftOrderID: draftOrderData.draftOrder.id, createdAt: draftOrderData.draftOrder.createdAt })
+        await draftOrder.save()
+        // console.log('Data from create draft order:', draftOrderData);
+        return json({
+          message: 'Successfully completed operation.',
+          discountCodeNotValid: false,
+          ...draftOrderData,
+        });
+      }
+    }
 
     const discountData = await discountModel.findOne()
 
@@ -191,6 +254,9 @@ export const action = async ({ request }) => {
       };
     });
 
+    // console.log("shopData,accessToken,lineItems,note", shopData, shopData.accessToken,
+    //   lineItems, data.note);
+
     const draftOrderData = await createDraftOrder({
       shopData,
       accessToken: shopData.accessToken,
@@ -208,9 +274,9 @@ export const action = async ({ request }) => {
 
     return json({
       message: 'Successfully completed operation.',
+      discountCodeNotValid: false,
       ...draftOrderData,
     });
-    throw new Error("in process");
 
   } catch (error) {
     console.error("Error parsing JSON:", error);

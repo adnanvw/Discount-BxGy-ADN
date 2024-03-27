@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 import discountModel from "../MONGODB/models/DiscountModel";
+import AlternativeDiscountModel from "../MONGODB/models/AlternativeDiscountModel";
 
 export const action = async ({ request }) => {
     const data = JSON.parse(await request.text());
@@ -12,10 +13,18 @@ export const action = async ({ request }) => {
 
                 // console.log('Received data for saving:', data);
 
-                const createdDiscount = await discountModel.create({
-                    ...data,
-                    storeURL: session.shop
-                });
+                let createdDiscount
+                if (data.type === 'alternativeDiscounts') {
+                    createdDiscount = await AlternativeDiscountModel.create({
+                        ...data,
+                        storeURL: session.shop
+                    });
+                } else {
+                    createdDiscount = await discountModel.create({
+                        ...data,
+                        storeURL: session.shop
+                    });
+                }
 
                 return json({
                     success: "Data Saved Successfully.",
